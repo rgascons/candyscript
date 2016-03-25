@@ -1,0 +1,14 @@
+{
+  "name": "candyscript",
+  "version": "0.0.1",
+  "description": "Just a simple language",
+  "main": "./candyscript/candyscript.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ricard Gascons",
+  "license": "ISC",
+  "dependencies": {
+    "jison": "^0.4.17"
+  }
+}
