@@ -30,12 +30,12 @@
 
 prog
     : block_instructions EOF
-        { typeof console !== 'undefined' ? console.log($1) : print($1);
-          return $1; } /* prints the tree when the parsing is finished */
+        { return $1; } /* to print the tree: typeof console !== 'undefined' ? console.log($1) : print($1); */
     ;
 
 block_instructions
     : instruction ';' block_instructions
+        { $$ = yy.addInstruction($1); }
     |
     ;
 

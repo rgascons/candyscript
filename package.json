@@ -9,6 +9,7 @@
   "author": "Ricard Gascons",
   "license": "ISC",
   "dependencies": {
-    "jison": "^0.4.17"
+    "jison": "^0.4.17",
+    "lodash": "^4.6.1"
   }
 }

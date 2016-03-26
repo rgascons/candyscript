@@ -1,19 +1,26 @@
+var _ = require('lodash');
 var Stack = require('./stack');
 
-var ast,
+var list_instr,
     stack;
 
 module.exports = {
     init: function(root) {
-        ast = root;
+        list_instr = root;
         stack = new Stack();
     },
     run: function() {
-        run_instructions(ast);
+        run_instructions(list_instr);
     }
 };
 
-function run_instructions(ast) {
+function run_instructions(list_instr) {
+    _(list_instr).forEachRight(function(instr) {
+        execute(instr);
+    });
+}
+
+function execute(ast) {
     var type = ast.type;
 
     switch (type) {

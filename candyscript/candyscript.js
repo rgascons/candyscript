@@ -1,3 +1,4 @@
+var fs = require('fs');
 var parser = require("../parser/grammar").parser;
 var interp = require("../interp/interp");
 
@@ -7,6 +8,10 @@ function parse(input) {
     return parser.parse(input);
 }
 
-var ast = parse("write 4+3;"); // TODO: read from file
+function readFromFile() {
+    return fs.readFileSync(process.argv[2], 'utf8').toString();
+}
+var raw_program = readFromFile();
+var ast = parse(raw_program);
 interp.init(ast);
 interp.run();
