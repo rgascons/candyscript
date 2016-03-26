@@ -14,6 +14,7 @@
 ";"                                         return ';'
 [0-9]+("."[0-9]+)?\b                        return 'NUMBER'
 ([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0-9])*       return 'ID'
+\"(\\.|[^"])*\"                             return 'STRING'
 <<EOF>>                                     return 'EOF'
 .                                           return 'INVALID'
 
@@ -52,13 +53,9 @@ assign
 write
     : 'WRITE' e
         {$$ = new yy.AstNode('WRITE', [$2]);}
-
-/*expressions
-    : e EOF
-        { typeof console !== 'undefined' ? console.log($1) : print($1);
-          return $1; } /* prints the tree when the parsing is finished */
-    ;*/
-
+    | 'WRITE' 'STRING'
+        {$$ = new yy.AstNode('WRITE', [$2]);}
+    ;
 e
     : e 'PLUS' e
         {$$ = new yy.AstNode('PLUS', [$1, $3]);}

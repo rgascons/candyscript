@@ -1,5 +1,7 @@
 var _ = require('lodash');
 var Stack = require('./stack');
+var assert = require('assert');
+var Data = require('./data');
 
 var list_instr,
     stack;
@@ -37,11 +39,14 @@ function execute(ast) {
 function assign(id, value) {
     var ID = id;
     var VAL = evaluate(value);
-    stack.setVar(ID, VAL);
+    stack.setVar(ID, VAL, Data.Type.NUMBER);
 }
 
 function write(ast) {
-    console.log(evaluate(ast.getChild(0)));
+    var val = ast.getChild(0);
+    if (typeof val === 'string') {
+        console.log(val);
+    } else console.log(evaluate(ast.getChild(0)));
 }
 
 function evaluate(ast) {
@@ -59,7 +64,9 @@ function evaluate(ast) {
         case 'NUMBER':
             return Number(ast.getChild(0));
         case 'ID':
-            return stack.getVar(ast.getChild(0));
+            var Var = stack.getVar(ast.getChild(0));
+            assert(Var.getType() === Data.Type.NUMBER);
+            return Var.getValue();
         default: return;
     }
 }
