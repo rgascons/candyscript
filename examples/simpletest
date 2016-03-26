@@ -1,0 +1,4 @@
+write 5;
+i = 5+2;
+write i;
+write i+1;
