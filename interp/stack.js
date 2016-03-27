@@ -10,7 +10,7 @@ Stack.prototype.setVar = function(id, value, type) {
 };
 
 Stack.prototype.getVar = function (id) {
-    assert (this.stack[id] !== 'undefined', 'Variable undefined');
+    assert (this.stack[id] !== undefined, 'Variable ' + id + ' not defined.');
     return this.stack[id];
 };
 
