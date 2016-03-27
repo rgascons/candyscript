@@ -56,13 +56,13 @@ function execute_block(ast) {
     switch (type) {
         case 'IF':
             condition = evaluate(ast.getChild(0));
-            if (condition > 0) {
+            if (condition) {
                 run_statements(ast.getChild(1));
             }
             break;
         case 'WHILE':
             condition = evaluate(ast.getChild(0));
-            while (condition > 0) {
+            while (condition) {
                 run_statements(ast.getChild(1));
                 condition = evaluate(ast.getChild(0));
             }
@@ -94,8 +94,24 @@ function evaluate(ast) {
             return evaluate(ast.getChild(0)) * evaluate(ast.getChild(1));
         case 'DIV':
             return evaluate(ast.getChild(0)) / evaluate(ast.getChild(1));
+        case '>':
+            return evaluate(ast.getChild(0)) > evaluate(ast.getChild(1));
+        case '<':
+            return evaluate(ast.getChild(0)) < evaluate(ast.getChild(1));
+        case '>=':
+            return evaluate(ast.getChild(0)) >= evaluate(ast.getChild(1));
+        case '<=':
+            return evaluate(ast.getChild(0)) <= evaluate(ast.getChild(1));
+        case '==':
+            return evaluate(ast.getChild(0)) === evaluate(ast.getChild(1));
+        case '!=':
+            return evaluate(ast.getChild(0)) !== evaluate(ast.getChild(1));
         case 'NUMBER':
             return Number(ast.getChild(0));
+        case 'TRUE':
+            return true;
+        case 'FALSE':
+            return false;
         case 'ID':
             var Var = stack.getVar(ast.getChild(0));
             assert(Var.getType() === Data.Type.NUMBER);

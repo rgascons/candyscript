@@ -1,0 +1,9 @@
+if (1 > 0) {
+    write "Condition true";
+}
+i = 1 == 0;
+write i;
+
+if (false) {
+    write "Condition false";
+}

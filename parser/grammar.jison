@@ -9,12 +9,20 @@
 "/"                                         return 'DIV'
 "-"                                         return 'MINUS'
 "+"                                         return 'PLUS'
+">"                                         return '>'
+"<"                                         return '<'
+">="                                        return '>='
+"<="                                        return '<='
+"!="                                        return '!='
+"=="                                        return '=='
 "="                                         return 'EQUAL'
 ";"                                         return ';'
 "{"                                         return '{'
 "}"                                         return '}'
 "("                                         return '('
 ")"                                         return ')'
+"true"                                      return 'TRUE'
+"false"                                     return 'FALSE'
 "if"                                        return 'IF'
 "while"                                     return 'WHILE'
 "write"                                     return 'WRITE'
@@ -30,6 +38,7 @@
 
 %left 'PLUS' 'MINUS'
 %left 'MUL' 'DIV'
+%left '>' '<' '>=' '<=' '!=' '=='
 
 %start prog
 
@@ -82,8 +91,24 @@ e
         {$$ = new yy.AstNode('MUL', [$1, $3]);}
     | e 'DIV' e
         {$$ = new yy.AstNode('DIV', [$1, $3]);}
+    | e '>' e
+        {$$ = new yy.AstNode('>', [$1, $3]);}
+    | e '<' e
+        {$$ = new yy.AstNode('<', [$1, $3]);}
+    | e '>=' e
+        {$$ = new yy.AstNode('>=', [$1, $3]);}
+    | e '<=' e
+        {$$ = new yy.AstNode('<=', [$1, $3]);}
+    | e '==' e
+        {$$ = new yy.AstNode('==', [$1, $3]);}
+    | e '!=' e
+        {$$ = new yy.AstNode('!=', [$1, $3]);}
     | 'NUMBER'
         {$$ = new yy.AstNode('NUMBER', [$1]);}
+    | 'TRUE'
+        {$$ = new yy.AstNode('TRUE', []);}
+    | 'FALSE'
+        {$$ = new yy.AstNode('FALSE', []);}
     | 'ID'
         {$$ = new yy.AstNode('ID', [$1]);}
     ;
