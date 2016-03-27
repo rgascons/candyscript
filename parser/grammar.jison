@@ -5,9 +5,11 @@
 %%
 
 \s+                   /* skip whitespace */
+"**"                                        return 'POW'
 "*"                                         return 'MUL'
 "/"                                         return 'DIV'
 "-"                                         return 'MINUS'
+"%"                                         return 'MOD'
 "+"                                         return 'PLUS'
 ">"                                         return '>'
 "<"                                         return '<'
@@ -38,8 +40,10 @@
 /* operator associations and precedence */
 
 %left 'PLUS' 'MINUS'
-%left 'MUL' 'DIV'
-%left '>' '<' '>=' '<=' '!=' '=='
+%left 'MUL' 'DIV' 'MOD'
+%left UMINUS
+%right 'POW'
+%nonassoc '>' '<' '>=' '<=' '!=' '=='
 
 %start prog
 
@@ -94,6 +98,10 @@ e
         {$$ = new yy.AstNode('MUL', [$1, $3]);}
     | e 'DIV' e
         {$$ = new yy.AstNode('DIV', [$1, $3]);}
+    | e 'MOD' e
+        {$$ = new yy.AstNode('MOD', [$1, $3]);}
+    | e 'POW' e
+        {$$ = new yy.AstNode('POW', [$1, $3]);}
     | e '>' e
         {$$ = new yy.AstNode('>', [$1, $3]);}
     | e '<' e
@@ -106,6 +114,8 @@ e
         {$$ = new yy.AstNode('==', [$1, $3]);}
     | e '!=' e
         {$$ = new yy.AstNode('!=', [$1, $3]);}
+    | 'MINUS' e %prec UMINUS
+        {$$ = new yy.AstNode('UMINUS', [$2]);}
     | 'NUMBER'
         {$$ = new yy.AstNode('NUMBER', [$1]);}
     | 'TRUE'

@@ -103,6 +103,10 @@ function evaluate(ast) {
             return evaluate(ast.getChild(0)) * evaluate(ast.getChild(1));
         case 'DIV':
             return evaluate(ast.getChild(0)) / evaluate(ast.getChild(1));
+        case 'MOD':
+            return evaluate(ast.getChild(0)) % evaluate(ast.getChild(1));
+        case 'POW':
+            return Math.pow(evaluate(ast.getChild(0)), evaluate(ast.getChild(1)));
         case '>':
             return evaluate(ast.getChild(0)) > evaluate(ast.getChild(1));
         case '<':
@@ -115,6 +119,8 @@ function evaluate(ast) {
             return evaluate(ast.getChild(0)) === evaluate(ast.getChild(1));
         case '!=':
             return evaluate(ast.getChild(0)) !== evaluate(ast.getChild(1));
+        case 'UMINUS':
+            return - evaluate(ast.getChild(0));
         case 'NUMBER':
             return Number(ast.getChild(0));
         case 'TRUE':
