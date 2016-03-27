@@ -10,8 +10,14 @@
 "-"                                         return 'MINUS'
 "+"                                         return 'PLUS'
 "="                                         return 'EQUAL'
-"write"                                     return 'WRITE'
 ";"                                         return ';'
+"{"                                         return '{'
+"}"                                         return '}'
+"("                                         return '('
+")"                                         return ')'
+"if"                                        return 'IF'
+"while"                                     return 'WHILE'
+"write"                                     return 'WRITE'
 [0-9]+("."[0-9]+)?\b                        return 'NUMBER'
 ([a-z]|[A-Z]|_)([a-z]|[A-Z]|_|[0-9])*       return 'ID'
 \"(\\.|[^"])*\"                             return 'STRING'
@@ -30,17 +36,20 @@
 %% /* language grammar */
 
 prog
-    : block_instructions EOF
+    : statement EOF
         { return $1; } /* to print the tree: typeof console !== 'undefined' ? console.log($1) : print($1); */
     ;
 
-block_instructions
-    : instruction ';' block_instructions
-        { $$ = yy.addInstruction($1); }
+statement
+    : statement line ';'
+        {$$ = new yy.AstNode('STMT-LINE', [$1, $2]);}
+    | statement block
+        {$$ = new yy.AstNode('STMT-BLCK', [$1, $2]);}
     |
+        {$$ = new yy.AstNode('no-op');}
     ;
 
-instruction
+line
     : assign
     | write
     ;
@@ -56,6 +65,14 @@ write
     | 'WRITE' 'STRING'
         {$$ = new yy.AstNode('WRITE', [$2]);}
     ;
+
+block
+    : 'IF' '(' e ')' '{' statement '}'
+        {$$ = new yy.AstNode('IF', [$3, $6]);}
+    | 'WHILE' '(' e ')' '{' statement '}'
+        {$$ = new yy.AstNode('WHILE', [$3, $6]);}
+    ;
+
 e
     : e 'PLUS' e
         {$$ = new yy.AstNode('PLUS', [$1, $3]);}

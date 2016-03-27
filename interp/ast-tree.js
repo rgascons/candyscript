@@ -1,11 +1,4 @@
 var scope = exports;
-var instruction_list = [];
-
-scope.addInstruction = function(ast) {
-    instruction_list.push(ast);
-    return instruction_list;
-};
-
 
 scope.AstNode = function (type, params) {
     this.type = type;

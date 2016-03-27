@@ -3,26 +3,39 @@ var Stack = require('./stack');
 var assert = require('assert');
 var Data = require('./data');
 
-var list_instr,
-    stack;
+var stack;
 
 module.exports = {
     init: function(root) {
-        list_instr = root;
+        this.root = root;
         stack = new Stack();
     },
     run: function() {
-        run_instructions(list_instr);
+        run_statements(this.root);
     }
 };
 
-function run_instructions(list_instr) {
-    _(list_instr).forEachRight(function(instr) {
-        execute(instr);
-    });
+function run_statements(ast) {
+    if (ast.type !== 'no-op') {
+        run_statements(ast.getChild(0));
+        execute_stmt(ast);
+    }
 }
 
-function execute(ast) {
+function execute_stmt(ast) {
+    var type = ast.type;
+    
+    switch (type) {
+        case 'STMT-LINE':
+            execute_line(ast.getChild(1));
+            break;
+        case 'STMT-BLCK':
+            execute_block(ast.getChild(1));
+            break;
+    }
+}
+
+function execute_line(ast) {
     var type = ast.type;
 
     switch (type) {
@@ -33,6 +46,26 @@ function execute(ast) {
             write(ast);
             break;
         default: break;
+    }
+}
+
+function execute_block(ast) {
+    var type = ast.type;
+    var condition;
+    
+    switch (type) {
+        case 'IF':
+            condition = evaluate(ast.getChild(0));
+            if (condition > 0) {
+                run_statements(ast.getChild(1));
+            }
+            break;
+        case 'WHILE':
+            condition = evaluate(ast.getChild(0));
+            while (condition > 0) {
+                run_statements(ast.getChild(1));
+                condition = evaluate(ast.getChild(0));
+            }
     }
 }
 

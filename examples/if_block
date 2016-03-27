@@ -1,0 +1,12 @@
+i = 2;
+if (i) {
+    write i;
+    i = 0;
+    if (1) {write "Nested if";}
+}
+if (i) {
+    write "You won't see this";
+    if (0) {write "Unreachable nested if";}
+    i = 10;
+}
+write i;
