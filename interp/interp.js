@@ -60,12 +60,21 @@ function execute_block(ast) {
                 run_statements(ast.getChild(1));
             }
             break;
+        case 'IF-ELSE':
+            condition = evaluate(ast.getChild(0));
+            if (condition) {
+                run_statements(ast.getChild(1));
+            } else {
+                run_statements(ast.getChild(2));
+            }
+            break;
         case 'WHILE':
             condition = evaluate(ast.getChild(0));
             while (condition) {
                 run_statements(ast.getChild(1));
                 condition = evaluate(ast.getChild(0));
             }
+            break;
     }
 }
 

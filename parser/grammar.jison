@@ -24,6 +24,7 @@
 "true"                                      return 'TRUE'
 "false"                                     return 'FALSE'
 "if"                                        return 'IF'
+"else"                                      return 'ELSE'
 "while"                                     return 'WHILE'
 "write"                                     return 'WRITE'
 [0-9]+("."[0-9]+)?\b                        return 'NUMBER'
@@ -78,6 +79,8 @@ write
 block
     : 'IF' '(' e ')' '{' statement '}'
         {$$ = new yy.AstNode('IF', [$3, $6]);}
+    | 'IF' '(' e ')' '{' statement '}' 'ELSE' '{' statement '}'
+        {$$ = new yy.AstNode('IF-ELSE', [$3, $6, $10]);}
     | 'WHILE' '(' e ')' '{' statement '}'
         {$$ = new yy.AstNode('WHILE', [$3, $6]);}
     ;

@@ -1,0 +1,11 @@
+if (true) {
+    write "if happened";
+} else {
+    write "else didn't";
+}
+
+if (false) {
+    write "if didn't happen";
+} else {
+    write "else did happen";
+}
