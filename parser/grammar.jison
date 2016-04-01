@@ -57,7 +57,9 @@ prog
 statement
     : statement line ';'
         {$$ = new yy.AstNode('STMT-LINE', [$1, $2]);}
-    | statement block
+    | statement block_if
+        {$$ = new yy.AstNode('STMT-BLCK', [$1, $2]);}
+    | statement block_while
         {$$ = new yy.AstNode('STMT-BLCK', [$1, $2]);}
     |
         {$$ = new yy.AstNode('no-op');}
@@ -80,13 +82,18 @@ write
         {$$ = new yy.AstNode('WRITE', [$2]);}
     ;
 
-block
+block_if
     : 'IF' '(' e ')' '{' statement '}'
         {$$ = new yy.AstNode('IF', [$3, $6]);}
+    | 'IF' '(' e ')' '{' statement '}' 'ELSE' block_if
+        {$$ = new yy.AstNode('IF-ELSE', [$3, $6, $9]);}
     | 'IF' '(' e ')' '{' statement '}' 'ELSE' '{' statement '}'
         {$$ = new yy.AstNode('IF-ELSE', [$3, $6, $10]);}
-    | 'WHILE' '(' e ')' '{' statement '}'
-        {$$ = new yy.AstNode('WHILE', [$3, $6]);}
+    ;
+
+block_while
+    :  'WHILE' '(' e ')' '{' statement '}'
+         {$$ = new yy.AstNode('WHILE', [$3, $6]);}
     ;
 
 e

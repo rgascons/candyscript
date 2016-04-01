@@ -1,11 +1,9 @@
-if (true) {
-    write "if happened";
-} else {
-    write "else didn't";
-}
-
 if (false) {
-    write "if didn't happen";
+    write "if didn't happened";
+} else if (false) {
+    write "else if did";
+} else if (true) {
+    write "lolol";
 } else {
-    write "else did happen";
+    write "kek";
 }

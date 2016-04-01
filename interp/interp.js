@@ -65,7 +65,11 @@ function execute_block(ast) {
             if (condition) {
                 run_statements(ast.getChild(1));
             } else {
-                run_statements(ast.getChild(2));
+                if (ast.getChild(2).type === 'IF-ELSE' || ast.getChild(2).type === 'IF') {
+                    execute_block(ast.getChild(2));
+                }else {
+                    run_statements(ast.getChild(2));
+                }
             }
             break;
         case 'WHILE':
