@@ -1,6 +1,8 @@
 
 var Type = Object.freeze({
-    NUMBER: "number"
+    NUMBER: "number",
+    BOOLEAN: "boolean",
+    STRING: "string"
 });
 
 function Data(value, type) {

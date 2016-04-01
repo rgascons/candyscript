@@ -78,8 +78,6 @@ assign
 write
     : 'WRITE' e
         {$$ = new yy.AstNode('WRITE', [$2]);}
-    | 'WRITE' 'STRING'
-        {$$ = new yy.AstNode('WRITE', [$2]);}
     ;
 
 block_if
@@ -125,6 +123,8 @@ e
         {$$ = new yy.AstNode('UMINUS', [$2]);}
     | 'NUMBER'
         {$$ = new yy.AstNode('NUMBER', [$1]);}
+    | 'STRING'
+        {$$ = new yy.AstNode('STRING', [$1]);}
     | 'TRUE'
         {$$ = new yy.AstNode('TRUE', []);}
     | 'FALSE'

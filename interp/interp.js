@@ -85,7 +85,9 @@ function execute_block(ast) {
 function assign(id, value) {
     var ID = id;
     var VAL = evaluate(value);
-    stack.setVar(ID, VAL, Data.Type.NUMBER);
+    if (checkIntegers(VAL, 1)) {stack.setVar(ID, VAL, Data.Type.NUMBER);}
+    else if (checkString(VAL, " ")) {stack.setVar(ID, VAL, Data.Type.STRING);}
+    else stack.setVar(ID, VAL, Data.Type.BOOLEAN);
 }
 
 function write(ast) {
@@ -95,21 +97,51 @@ function write(ast) {
     } else console.log(evaluate(ast.getChild(0)));
 }
 
+function checkIntegers(v1, v2) {
+    return typeof v1 === 'number' && typeof v2 === 'number';
+}
+
+function checkString(v1, v2) {
+    return typeof v1 === 'string' && typeof v2 === 'string';
+}
+
+function replaceAll(string, search, replacement) {
+    return string.replace(new RegExp(search, 'g'), replacement);
+}
+
 function evaluate(ast) {
     var type = ast.type;
-
+    var v1, v2;
     switch (type) {
         case 'PLUS':
+            v1 = evaluate(ast.getChild(0));
+            v2 = evaluate(ast.getChild(1));
+            if (!checkIntegers(v1, v2) && !checkString(v1, v2)) {throw "Incompatible types"}
             return evaluate(ast.getChild(0)) + evaluate(ast.getChild(1));
         case 'MINUS':
-            return evaluate(ast.getChild(0)) - evaluate(ast.getChild(1));
+            v1 = evaluate(ast.getChild(0));
+            v2 = evaluate(ast.getChild(1));
+            checkIntegers(v1, v2);
+            return evaluate(v1) - evaluate(ast.getChild(1));
         case 'MUL':
+            v1 = evaluate(ast.getChild(0));
+            v2 = evaluate(ast.getChild(1));
+            checkIntegers(v1, v2);
             return evaluate(ast.getChild(0)) * evaluate(ast.getChild(1));
         case 'DIV':
+            v1 = evaluate(ast.getChild(0));
+            v2 = evaluate(ast.getChild(1));
+            checkIntegers(v1, v2);
             return evaluate(ast.getChild(0)) / evaluate(ast.getChild(1));
         case 'MOD':
+            v1 = evaluate(ast.getChild(0));
+            v2 = evaluate(ast.getChild(1));
+            checkIntegers(v1, v2);
             return evaluate(ast.getChild(0)) % evaluate(ast.getChild(1));
         case 'POW':
+            v1 = evaluate(ast.getChild(0));
+            v2 = evaluate(ast.getChild(1));
+            checkIntegers(v1, v2);
             return Math.pow(evaluate(ast.getChild(0)), evaluate(ast.getChild(1)));
         case '>':
             return evaluate(ast.getChild(0)) > evaluate(ast.getChild(1));
@@ -124,17 +156,22 @@ function evaluate(ast) {
         case '!=':
             return evaluate(ast.getChild(0)) !== evaluate(ast.getChild(1));
         case 'UMINUS':
+            v1 = evaluate(ast.getChild(0));
+            checkIntegers(v1, 1);
             return - evaluate(ast.getChild(0));
         case 'NUMBER':
             return Number(ast.getChild(0));
+        case 'STRING':
+            return String(ast.getChild(0));
         case 'TRUE':
-            return true;
+            return Boolean(true);
         case 'FALSE':
-            return false;
+            return Boolean(false);
         case 'ID':
             var Var = stack.getVar(ast.getChild(0));
-            assert(Var.getType() === Data.Type.NUMBER);
-            return Var.getValue();
+            if (Var.getType() === Data.Type.STRING) {
+                return replaceAll(Var.getValue(), '"', '');
+            } return Var.getValue();
         default: return;
     }
 }

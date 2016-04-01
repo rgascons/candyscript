@@ -1,0 +1,5 @@
+i = "Hello" + " world" + "!";
+write i;
+j = false;
+write j;
+write 1+2;
