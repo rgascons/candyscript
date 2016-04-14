@@ -6,9 +6,9 @@ var Data = require('./data');
 var stack;
 
 module.exports = {
-    init: function(root) {
+    load: function(root) {
         this.root = root;
-        stack = new Stack();
+        stack = stack === undefined? new Stack() : stack;
     },
     run: function() {
         run_statements(this.root);

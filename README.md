@@ -21,4 +21,5 @@ Just run `npm install` and then `compile.sh`.
 
 Run
 ---
-Execute `node candyscript/candyscript.js examples/simpletest`
+Execute `node candyscript/candyscript.js --file=examples/simpletest`
+or just `node candyscript/candyscript.js` for the command-line version.
