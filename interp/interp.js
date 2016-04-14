@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var Stack = require('./stack');
 var assert = require('assert');
 var Data = require('./data');
