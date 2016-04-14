@@ -161,16 +161,15 @@ function evaluate(ast) {
         case 'NUMBER':
             return Number(ast.getChild(0));
         case 'STRING':
-            return String(ast.getChild(0));
+            var raw_string = String(ast.getChild(0));
+            return replaceAll(raw_string, '"', '');
         case 'TRUE':
             return Boolean(true);
         case 'FALSE':
             return Boolean(false);
         case 'ID':
             var Var = stack.getVar(ast.getChild(0));
-            if (Var.getType() === Data.Type.STRING) {
-                return replaceAll(Var.getValue(), '"', '');
-            } return Var.getValue();
+            return Var.getValue();
         default: return;
     }
 }
