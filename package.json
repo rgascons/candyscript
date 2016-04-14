@@ -9,7 +9,6 @@
   "author": "Ricard Gascons",
   "license": "ISC",
   "dependencies": {
-    "jison": "^0.4.17",
     "optimist": "^0.6.1"
   }
 }

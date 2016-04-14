@@ -16,7 +16,7 @@ such as strings, boolean algebra, conditionals, loops, functions, etc.
 
 Compile
 -------
-
+Ensure you have jison installed. If not, just run `npm install -g jison`
 Just run `npm install` and then `compile.sh`.
 
 Run
